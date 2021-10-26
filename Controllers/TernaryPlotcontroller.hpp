@@ -9,7 +9,8 @@
 class TernaryPlotController : public QWidget
 {
     /*!
-     * \brief TernaryPlot controller : Model = Ternaryplot; View = TernaryDrawer
+     * @brief TernaryPlot controller : Model = Ternaryplot; View = TernaryDrawer
+     * @class Can be instantiated as const because every methods are const qualified
      * Groups all methods that can be used by user
     */
     Q_OBJECT
@@ -42,6 +43,14 @@ public:
      * \param Pen : QPen with which we want to draw the line (Optional)
     */
     void DrawLine(const Points& Point1,const Points& Point2,const QPen& Pen = QPen{Qt::red,3})const;
+
+    /*!
+     * \brief Draw a line on the canvas
+     * \param Point1 : Line's start point represented as point with cartesian coordinates
+     * \param Point2 : Line's end point represented as point with cartesian coordinates
+     * \param Pen : QPen with which we want to draw the line (Optional)
+    */
+    void DrawLineInside(const Ratios& Ratio1,const Ratios& Ratio2,const QPen& Pen = QPen{Qt::red,3})const;
 
 
     /*!
@@ -90,8 +99,15 @@ public:
     */
     void ConodalsInterpolation(const Ratios& Ratio)const;
 
+
+    /**
+     * @brief Refresh scene to draw new element
+     */
     inline void Refresh()const{Drawer->Refresh();};
 
+    /**
+     * @brief Clear scene to make a new drawing
+     */
     inline void Clear()const{Drawer->Clear();DrawTriangle();}
 
 
@@ -104,7 +120,11 @@ public slots:
     void Position(const Points & point);
 private:
     const TernaryDrawer *Drawer; //Vue
-    TernaryPlot *Model; //Model 
+    TernaryPlot *Model; //Model
+
+    /**
+     * @brief Draw triangle given by model
+     */
     inline void DrawTriangle()const{Drawer->DrawTriangle(this->Model->GetTriangle());};
 
 };

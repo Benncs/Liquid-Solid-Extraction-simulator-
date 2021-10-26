@@ -20,6 +20,8 @@ public:
 
     bool operator== (const Ratios& R)const;
 
+    bool IsValid()const;
+
 private:
     static inline bool CloseEnough(double x, double y,double tol=1e-4){
         return std::abs(x-y)<tol;

@@ -30,6 +30,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStart"/>
+   <addaction name="actionShowUnderFlowLine"/>
    <addaction name="actionFindConvergence"/>
    <addaction name="actionInput"/>
    <addaction name="actionSave_as_txt"/>
@@ -78,6 +79,15 @@
    </property>
    <property name="text">
     <string>FindConvergence</string>
+   </property>
+  </action>
+  <action name="actionShowUnderFlowLine">
+   <property name="icon">
+    <iconset resource="Ressources/ressources.qrc">
+     <normaloff>:/Toolbar/Line.ico</normaloff>:/Toolbar/Line.ico</iconset>
+   </property>
+   <property name="text">
+    <string>ShowUnderFlowLine</string>
    </property>
   </action>
  </widget>

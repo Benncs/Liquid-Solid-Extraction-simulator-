@@ -77,8 +77,23 @@ namespace Calculus {
     class NewtonN {
     public:
 
+        /**
+         * @brief NewtonN Solve non-linear system with newton's method
+         * As a variadic template method, any number of unknow are possible
+         * @param X Vector (dimension n) represents unknows to find (pass as ref, result)
+         * @param Funcs system line
+         * @example for a 3*3 system
+         * auto X = new LinearAlgebra::Vector<std::complex<double>>(Init);
+         * Math::NewtonN(X,std::move(F),std::move(G),std::move(H));
+         */
         explicit NewtonN(LinearAlgebra::Vector<T> *X, FuncArg &&... Funcs);
 
+        /**
+         * @brief Jacobian, automaticly compute jacobian matrix of a given system
+         * @param X
+         * @param funcs
+         * @return
+         */
         LinearAlgebra::Matrix<T> Jacobian(LinearAlgebra::Vector<T> *X, const FuncArg &... funcs);
 
     private:

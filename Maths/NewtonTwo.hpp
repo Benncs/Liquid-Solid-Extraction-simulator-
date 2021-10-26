@@ -8,6 +8,7 @@
 #define TOL 1e-8
 #define LOOPMAX 100
 #include "Maths/Calculus/calculus.hpp"
+#include "Maths/MatrixLib/Matrix.hpp"
 
 namespace Calculus {
 

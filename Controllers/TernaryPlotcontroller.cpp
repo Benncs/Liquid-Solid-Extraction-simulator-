@@ -1,19 +1,37 @@
 #include "TernaryPlotcontroller.hpp"
 TernaryPlotController::TernaryPlotController(QWidget *parent):QWidget(parent)
 {
-    Model = new TernaryPlot();
-    Drawer = new TernaryDrawer(this);
+    Model = new TernaryPlot(); //New model
+    Drawer = new TernaryDrawer(this); //New view
 
-    DrawTriangle();
+    DrawTriangle(); //Draw the triangle that represent diagram
+
+    //Connect position's slot
     this->connect(Drawer,&TernaryDrawer::CursorPosition,this, &TernaryPlotController::Position);
 
 }
 
 void TernaryPlotController::DrawLine(const Ratios &Ratio1, const Ratios &Ratio2,const QPen& Pen)const
 {
+    //It's actually a segment drawn between 2 given points
     const Points p1 = Model->RatioToPoint(Ratio1);
     const Points p2 = Model->RatioToPoint(Ratio2);
     Drawer->DrawLine(p1,p2,Pen);
+}
+
+void TernaryPlotController::DrawLine(const Points &Point1, const Points &Point2, const QPen &Pen) const
+{
+    Drawer->DrawLine(Point1,Point2,Pen);
+}
+
+void TernaryPlotController::DrawLineInside(const Ratios &Ratio1, const Ratios &Ratio2, const QPen &Pen) const
+{
+    if(Ratio1.IsValid() && Ratio2.IsValid()){
+        DrawLine(Ratio1,Ratio2,Pen);
+    }
+    else{
+        throw std::invalid_argument("Ratios is not correct");
+    }
 }
 
 void TernaryPlotController::DrawIsotherm(const QPen& Pen)const
@@ -21,7 +39,9 @@ void TernaryPlotController::DrawIsotherm(const QPen& Pen)const
     auto List = Model->GetPointList();
     auto LastPoint = Model->RatioToPoint(Ratios(0,0,1));
     List.emplace_back(LastPoint);
+
     std::sort(List.begin(),List.end(),Points::CompareX);
+
     int size = List.size();
     for(auto i = 0;i<size-1;++i){
         Drawer->DrawLine(List[i],List[i+1],Pen);

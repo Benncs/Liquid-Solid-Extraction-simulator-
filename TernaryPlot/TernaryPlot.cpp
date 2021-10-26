@@ -49,7 +49,7 @@ Ratios TernaryPlot::PointToRatio(const Points& point) const {
         a = (Xb*(point.y()-Yc) + Xc*(Yb-point.y()) + point.x()*(Yc-Yb) ) / NoZero;
         b = -(Xa*(point.y()-Yc) + Xc*(Ya-point.y()) + point.x()*(Yc-Ya)) / NoZero;
         c = 1-a-b;
-        if(0<=a && 0<=b && 0<=c)
+        if(0<=a && 0<=b && 0<=c and a<=1 && b<=1 && c<=1)
             return Ratios(a,b,c);
     }
 

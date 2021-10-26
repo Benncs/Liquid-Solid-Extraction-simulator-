@@ -1,13 +1,13 @@
 #include "theoricaltray.hpp"
 
-TheoricalTray::TheoricalTray(const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& Output):Feed(Feed),Output(Output)
+TheoreticalTray::TheoreticalTray(const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& Output):WithSolidFeed(Feed),SolventFeed(Output)
 {
-    OperatingPoint = std::make_shared<Current>(Feed->Mix(*Output));
+    OperatingPoint = Feed->Mix(Output);
     SlopeOM = OperatingPoint->getRatios().C()/OperatingPoint->getRatios().B();
     UnderFlowRatios = Ratios(0,1/(1+SlopeOM));
 }
 
-TrayOutput TheoricalTray::Compute()
+TrayOutput TheoreticalTray::Compute()
 {
     if(OperatingPoint->getRatios().C()<=UnderFlowFunction(OperatingPoint->getRatios().B())){
         throw std::invalid_argument("Solvent flow rate to low");
@@ -22,7 +22,7 @@ TrayOutput TheoricalTray::Compute()
     return  TrayOutput(OF,UF,this->OperatingPoint);
 }
 
-void TheoricalTray::ComputeOverFlowRatios()
+void TheoreticalTray::ComputeOverFlowRatios()
 {
     auto X = new LinearAlgebra::Vector<double>({0,0});
 

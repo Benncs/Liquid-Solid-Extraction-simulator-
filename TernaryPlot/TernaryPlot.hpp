@@ -20,33 +20,105 @@ using PointPair = Tuples<Points>;
 
 
 class TernaryPlot {
+    /**
+     * @class TernaryPlot
+     * Represent a ternary diagram
+     * Contains every useful method to add information to a ternary plot
+     */
 public:
     TernaryPlot(const TriangleType& Type = TriangleType::RECTANGLE);
 
+
+    /**
+     * @brief Convert a point in cartesian coordinates  into a ratio (trilinear coordinates)
+     * @param point to convert
+     * @return Ratios
+     */
     [[nodiscard]] Ratios PointToRatio(const Points& point) const;
+
+    /**
+     * @brief onvert a ratio (trilinear coordinates) into a point in cartesian coordinates
+     * @param Ratio to convert
+     * @return Point
+     */
     [[nodiscard]] Points RatioToPoint(const Ratios& Ratio) const;
 
+
+    /**
+     * @brief PointsList's const getter
+     * @return PointsList
+     */
     [[nodiscard]] std::vector<Points> PointsList()const{return PointList;}
 
+
+    /**
+     * @brief AddRatioToList
+     * @param ratio ratio to add
+     * @return true if ratios correctly added
+     */
     bool AddRatioToList(const Ratios& ratio);
+
+    /**
+     * @brief AddConodalsToList
+     * @param ratio1 first conodal point to add
+     * @param ratio2 second  conodal point to add
+     * @return true if ratios correctly added
+     */
     bool AddConodalsToList(const Ratios& ratio1,const Ratios& ratio2);
 
+
+    /**
+     * @brief Conodals list's size const getter
+     * @return size of conodals list
+     */
     int GetConodalsListSize()const{return Conodals.size();};
 
+
+    /**
+     * @brief Triangle's const getter
+     * @return Main triangle of the ternary plot
+     */
     std::shared_ptr<Triangle> GetTriangle()const{return MainTriangle;};
 
 
+    /**
+     * @brief Point list's const getter
+     * @return Point list
+     */
     std::vector<Points> GetPointList()const{return PointList;};
 
-
+    /**
+     * @brief GetConodalsPairsOfPoint const getter
+     * @return Conodals
+     */
     std::vector<Tuples<Points>> GetConodalsPairsOfPoint()const{return Conodals;};
 
+
+    /**
+     * @brief FindIntercept between 2 line represent as discontinute points in the points list
+     * @param Point absissa of point
+     * @param reverse (start at the end of the point list )
+     * @return interpolated point
+     */
     Points FindIntercept(const Points& Point,bool reverse=false);
 
+    /**
+     * @brief GetConodalsCoordinatesFromList
+     * @param index
+     * @return
+     */
     PointPair GetConodalsCoordinatesFromList(int index);
+
+    /**
+     * @brief ConodalInterpolation
+     * @param point
+     */
     void ConodalInterpolation(const Points& point);
 
 
+    /**
+     * @brief SortConodals
+     */
     void SortConodals();
 
 
@@ -57,6 +129,11 @@ private:
     std::vector<Points> PointList;
     std::vector<PointPair> Conodals;
     bool ShownIsotherm = false;
+    /**
+     * @brief LinearInterpolation
+     * @param Frame, tuple of point between which the point is located
+     * @return
+     */
     static Tuples<double> LinearInterpolation(const Tuples<Points>& Frame);
 
     //LinearAlgebra::Matrix<double> VertexMatrix;

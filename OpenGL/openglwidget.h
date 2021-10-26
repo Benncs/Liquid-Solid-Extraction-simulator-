@@ -14,44 +14,93 @@
 class OpenGLWidget: public QOpenGLWidget{
     Q_OBJECT
 public:
+    /**
+     * @brief OpenGLWidget constructor
+     * @param parent
+     */
     explicit OpenGLWidget(QWidget *parent = nullptr);
 
     ~OpenGLWidget();
 
+    /**
+     * @brief To get a painevent (draw and refresh scene)
+     * @param e
+     */
     void paintEvent(QPaintEvent* e) override;
 
-    QVector<GraphItem>& get_graphs();
 
-    template<typename F>
-    void InsertGraph(const F& function, double x_min, double x_max, unsigned int seg_count,Qt::GlobalColor Color = Qt::red);
+    /**
+     * @brief const getter method
+     * @return
+     */
+    const QVector<GraphItem>& get_graphs()const;
 
-    void DrawLine(const Points& Point1,const Points& Point2,const QPen Pen = QPen{Qt::red,3});
 
+    void DrawSegmentWith2Points(const Points& Point1,const Points& Point2,const QPen Pen = QPen{Qt::red,3});
+
+
+    /**
+     * @brief Main method
+     * Draw every graphs that have been added before into graph container
+     */
     void draw_graphs();
 
-    void FlushGraphs(){graphs.clear();};
 
+    /**
+     * @brief Clear scene
+     */
+    void FlushGraphs(){graphsContainer.clear();};
+
+    /**
+     * @brief Draw a point into the scene
+     * @param point Point to add
+     */
     void DrawPoint(const Points& point);
+
+    /**
+     * @brief mouseMoveEvent, get mouse position on the window
+     * @param event
+     */
     void mouseMoveEvent(QMouseEvent* event)override;
 
 
 
-
+    /**
+     * @brief set position of mouse's cursor in order to show it
+     * @param newPosition String fromated by controller
+     */
     void setPosition(const QString &newPosition);
 
 signals:
-    void CursorPosition(const Points& point);
+    /**
+     * @brief Emit mouse coordinates
+     * @param point coordinates
+     */
+    void CursorPosition(const Points& point)const;
 
 
 
 private:
-    QVector<GraphItem> graphs;
+    /**
+     * @brief graphsContainer contains every graph added by controlelr in order to show them
+     */
+    QVector<GraphItem> graphsContainer;
 
+
+    /**
+     * @brief ShowPosition, write mouse's cursor
+     * @param painter
+     */
     void ShowPosition(QPainter* painter);
 
+
+    /**
+     * @brief Init the scene, clear it, computes its bound
+     */
     void Init();
 
     QPen MainPen{Qt::black,3};
+
 
     QFont TextFont{"Verdana",10};
 
@@ -65,33 +114,5 @@ private:
 };
 
 
-//template<typename F>
-//void OpenGLWidget::InsertGraph(const F& function, double x_min, double x_max, unsigned int seg_count,Qt::GlobalColor Color){
-
-//   // GraphItem graph{ x_min, x_max, std::numeric_limits<double>::max(),std::numeric_limits<double>::min()};
-
-//    auto graph = GraphItem(x_min,x_max, std::numeric_limits<double>::max(),std::numeric_limits<double>::min());
-
-//        double x,y;
-
-////        auto d = (x_max - x_min) / (double)seg_count;
-////        for (auto x = x_min; x <= x_max; x += d)
-////        {
-
-////            auto y = function(x);
-
-////            if (graph.y_min > y) graph.y_min = y;
-////            if (graph.y_max < y) graph.y_max = y;
-
-//         graph.elements << Points{x, y};
-//         graph.Colors << Color;
-
-
-
-
-//        graph.Color =Color;
-
-//        this->graphs << graph;
-//}
 
 #endif // OPENGLWIDGET_H

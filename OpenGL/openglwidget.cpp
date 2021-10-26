@@ -23,12 +23,12 @@ void OpenGLWidget::paintEvent(QPaintEvent *e)
 }
 
 
-QVector<GraphItem> &OpenGLWidget::get_graphs()
+const QVector<GraphItem> &OpenGLWidget::get_graphs()const
 {
-    return this->graphs;
+    return this->graphsContainer;
 }
 
-void OpenGLWidget::DrawLine(const Points &Point1, const Points &Point2,const QPen Pen)
+void OpenGLWidget::DrawSegmentWith2Points(const Points &Point1, const Points &Point2,const QPen Pen)
 {
 
     double x_min = 0;
@@ -41,7 +41,7 @@ void OpenGLWidget::DrawLine(const Points &Point1, const Points &Point2,const QPe
     if (graph.y_min > Point1.y()) graph.y_min = Point1.y();
     if (graph.y_max < Point2.y()) graph.y_max = Point2.y();
 
-    this->graphs << graph;
+    this->graphsContainer << graph;
     return;
 
 }
@@ -54,7 +54,7 @@ void OpenGLWidget::Init(){
 
     auto draw_rect = boundary + QMargins(-offset, -offset, -offset, -offset);
 
-    maxmin = ComputeMaxMinXY(this->graphs);
+    maxmin = ComputeMaxMinXY(this->graphsContainer);
     cf = ComputeConversionFactor(maxmin, draw_rect);
 
     painter  = new QPainter(this);
@@ -78,9 +78,9 @@ void OpenGLWidget::setPosition(const QString &newPosition)
 void OpenGLWidget::draw_graphs(){
     Init();
 
-    QVector<GraphItem>::iterator i = this->graphs.begin();
+    QVector<GraphItem>::iterator i = this->graphsContainer.begin();
 
-    while (i != this->graphs.constEnd()){
+    while (i != this->graphsContainer.constEnd()){
         QPainterPath path;
         painter->setPen(i->Pen);
         const auto PointNumber = i->elements.count();

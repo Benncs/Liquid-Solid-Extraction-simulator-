@@ -40,9 +40,10 @@ private slots:
 
     void on_actionFindConvergence_triggered();
 
+    void on_actionShowUnderFlowLine_triggered();
+
 private:
     Ui::MainWindow *ui;
-    //QOpenGLWidget *View; //Object in which canvas is drawn
     ProcessController *controller; //Ternary plot's controller
 
     QSettings *settings;

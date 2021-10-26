@@ -8,5 +8,6 @@
         <file>SaveTxt.ico</file>
         <file>SaveCsv.ico</file>
         <file>Find.ico</file>
+        <file>Line.ico</file>
     </qresource>
 </RCC>

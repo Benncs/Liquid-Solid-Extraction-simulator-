@@ -145,3 +145,8 @@ void MainWindow::on_actionFindConvergence_triggered()
     delete settings;
 }
 
+
+void MainWindow::on_actionShowUnderFlowLine_triggered()
+{
+    controller->DrawUnderFlowLimit();
+}

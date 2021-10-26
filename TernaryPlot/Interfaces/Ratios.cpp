@@ -35,3 +35,11 @@ bool Ratios::operator==(const Ratios &R)const
     bool boolXc = CloseEnough(this->c,R.c);
     return boolXa && boolXb && boolXc;
 }
+
+bool Ratios::IsValid() const
+{
+    if(a<0 || b<0 || c<0 || a>1 || b>1|| c>1){
+        return false;
+    }
+    return true;
+}
