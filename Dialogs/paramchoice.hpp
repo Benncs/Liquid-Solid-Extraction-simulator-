@@ -53,10 +53,13 @@ public:
      */
     const std::shared_ptr<Current> &getOutput() const;
 
+    const QString& getFunc()const{return func;}
+
 private:
     Ui::ParamChoice *ui;
     std::shared_ptr<Current> Feed,CounterFeed;
     unsigned steps,ntray;
+    QString func;
 };
 
 #endif // PARAMCHOICE_HPP

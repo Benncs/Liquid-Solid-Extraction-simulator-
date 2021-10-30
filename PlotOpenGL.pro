@@ -1,4 +1,4 @@
-QT       += core gui openglwidgets
+QT       += core gui openglwidgets qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,6 +16,7 @@ SOURCES += \
     ExtractionProcess/current.cpp \
     ExtractionProcess/process.cpp \
     ExtractionProcess/theoricaltray.cpp \
+    ExtractionProcess/underflowfunctionparser.cpp \
     Maths/Geometry/Core/PolygonFactory.cpp \
     Maths/Geometry/Objects/Points.cpp \
     Maths/Geometry/Shapes/Circle.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     ExtractionProcess/current.hpp \
     ExtractionProcess/process.hpp \
     ExtractionProcess/theoricaltray.hpp \
+    ExtractionProcess/underflowfunctionparser.h \
     Maths/Algebra.hpp \
     Maths/Calculus/NewtonN.hpp \
     Maths/Calculus/calculus.hpp \

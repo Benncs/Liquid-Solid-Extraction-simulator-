@@ -1,15 +1,16 @@
 #include "theoricaltray.hpp"
 
-TheoreticalTray::TheoreticalTray(const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& Output):WithSolidFeed(Feed),SolventFeed(Output)
+TheoreticalTray::TheoreticalTray(const std::shared_ptr<UnderFlowFunctionParser>& UfFunc,const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& Output):WithSolidFeed(Feed),SolventFeed(Output)
 {
     OperatingPoint = Feed->Mix(Output);
     SlopeOM = OperatingPoint->getRatios().C()/OperatingPoint->getRatios().B();
     UnderFlowRatios = Ratios(0,1/(1+SlopeOM));
+    UnderFlowFunction = UfFunc;
 }
 
 TrayOutput TheoreticalTray::Compute()
 {
-    if(OperatingPoint->getRatios().C()<=UnderFlowFunction(OperatingPoint->getRatios().B())){
+    if(OperatingPoint->getRatios().C()<=UnderFlowFunction->eval(OperatingPoint->getRatios().B())){
         throw std::invalid_argument("Solvent flow rate to low");
     }
     this->ComputeOverFlowRatios();
@@ -29,7 +30,7 @@ void TheoreticalTray::ComputeOverFlowRatios()
     const std::function<double()> F1 = [&X,this](){
         const double x = X->GetElement(0);
         const double y = X->GetElement(1);
-        return y-this->UnderFlowFunction(x);
+        return y-this->UnderFlowFunction->eval(x);
     };
 
     const std::function<double()> F2 = [&X,this](){

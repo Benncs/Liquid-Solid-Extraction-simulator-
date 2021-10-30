@@ -159,7 +159,7 @@ private:
     const std::shared_ptr<Current> GetCurrentsFromIni(QSettings* Settings,const QString& group);
 
 
-
+    std::shared_ptr<UnderFlowFunctionParser> Parser;
 
 
 signals:

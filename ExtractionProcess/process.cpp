@@ -10,7 +10,7 @@ Process::~Process()
 
 }
 
-void Process::Run(unsigned int steps)
+void Process::Run(const std::shared_ptr<UnderFlowFunctionParser>& UfFunc,unsigned int steps)
 {
 
     const std::shared_ptr<Current> VoidFlow = std::make_shared<Current>();
@@ -26,8 +26,8 @@ void Process::Run(unsigned int steps)
     TrayOutput FirstTray,LastTray,MiddleTrays;
 
     for(unsigned i = 0;i<steps;++i){
-        FirstTray = TheoreticalTray(InputFeed,E[1]).Compute();
-        LastTray = TheoreticalTray(R[ntray-2],SolventFeed).Compute();
+        FirstTray = TheoreticalTray(UfFunc,InputFeed,E[1]).Compute();
+        LastTray = TheoreticalTray(UfFunc,R[ntray-2],SolventFeed).Compute();
 
         Ef[0] = FirstTray.Underflow;
         Ef[ntray-1] = LastTray.Underflow;
@@ -35,7 +35,7 @@ void Process::Run(unsigned int steps)
         Rf[ntray-1] = LastTray.Overflow;
 
         for(unsigned j = 1;j<ntray-1;++j){
-            MiddleTrays = TheoreticalTray(R[j-1],E[j+1]).Compute();
+            MiddleTrays = TheoreticalTray(UfFunc,R[j-1],E[j+1]).Compute();
             Ef[j] = MiddleTrays.Underflow;
             Rf[j] = MiddleTrays.Overflow;
         }

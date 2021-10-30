@@ -30,8 +30,7 @@ ParamChoice::ParamChoice(QWidget *parent) :
             Xs = this->ui->OutputXc->text().toDouble();
 
             CounterFeed = std::make_shared<Current>(Current(Flow,Ratios(Xa,Xb,Xs)));
-
-
+            func = this->ui->func->text();
         }
 
         else this->close();
@@ -62,3 +61,5 @@ const std::shared_ptr<Current> &ParamChoice::getOutput() const
 {
     return CounterFeed;
 }
+
+

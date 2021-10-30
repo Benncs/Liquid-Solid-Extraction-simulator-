@@ -16,6 +16,9 @@ void ProcessController::GetParamFromIni(QSettings *Settings)
         ntray = Settings->value("Tray").toUInt();
         steps = Settings->value("Steps").toUInt();
     }
+    if(Settings->contains("Function")){
+        Parser = std::make_shared<UnderFlowFunctionParser>(Settings->value("Function").toString());
+    }
     else{
         //Error that will be caught by mainwindow if ntray is missing or steps number
         throw std::invalid_argument("At leats one value is missing in .ini file");
@@ -53,6 +56,8 @@ const std::shared_ptr<Current> ProcessController::GetCurrentsFromIni(QSettings *
     }
 }
 
+#include "./ExtractionProcess/underflowfunctionparser.h"
+
 void ProcessController::DrawUnderFlowLimit()const
 {
     if(Drawn){
@@ -64,8 +69,8 @@ void ProcessController::DrawUnderFlowLimit()const
         for(int i=2;i<Nombre_Point;i++){
                 double x = inf+(i-1)*dx;
                 double x2 = inf+(i)*dx;
-                double res2 = TheoreticalTray::UnderFlowFunction(x2);
-                double res = TheoreticalTray::UnderFlowFunction(x);
+                double res2 = Parser->eval(x2);
+                double res = Parser->eval(x);
                 try{
                     TernaryController->DrawLineInside(Ratios(1-x-res,x),Ratios(1-x2-res2,x2),QPen{Qt::GlobalColor::darkCyan,2});
                 }catch(...){
@@ -74,7 +79,6 @@ void ProcessController::DrawUnderFlowLimit()const
         }
         TernaryController->Refresh();
     }
-
 
 }
 
@@ -98,7 +102,7 @@ void ProcessController::Start()
         ExtractionProcess = new Process(ntray,Feed,Output);
 
         //Call main method, process will compute everything
-        ExtractionProcess->Run(steps);
+        ExtractionProcess->Run(Parser,steps);
 
         //Result from simulator
         Data = ExtractionProcess->getData();
@@ -132,6 +136,7 @@ void ProcessController::GetParamFromDialog()
 
         //If everyting ok, param are correctly loaded
         LoadedParam = true;
+        Parser = std::make_shared<UnderFlowFunctionParser>(Dialogs->getFunc());
         delete Dialogs; //Delete dialog because it's useless anymore
     }
     catch(const std::exception& e){
@@ -202,7 +207,7 @@ int ProcessController::FindConvergence()
         while (count < MAX_PROCESS_ITERATIONS){
             count++; //To avoid infinite loop
             try{
-                ExtractionProcess->Run(steps); //Run with given step
+                ExtractionProcess->Run(Parser,steps); //Run with given step
                 //Because of the try scope, if run succeeds, we're sure that data are corrects
                 Data = ExtractionProcess->getData();
                 readyToSave=true;

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "ExtractionData.hpp"
+#include "underflowfunctionparser.h"
 
 
 
@@ -37,7 +38,7 @@ public:
      * Simulate process
      * @param steps Iteration needed by solver to converge
      */
-    void Run(unsigned steps);
+    void Run(const std::shared_ptr<UnderFlowFunctionParser>& UfFunc, unsigned steps);
 
     //Getters
 

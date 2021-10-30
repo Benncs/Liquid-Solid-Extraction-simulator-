@@ -5,7 +5,7 @@
 #include "Maths/Calculus/NewtonN.hpp"
 #include "functional"
 #include <memory>
-
+#include <QJSEngine>
 
 
 struct TrayOutput{
@@ -49,6 +49,8 @@ struct TrayOutput{
     std::shared_ptr<Current> Underflow;
 };
 
+#include "underflowfunctionparser.h"
+
 class TheoreticalTray
 {
     /**
@@ -57,10 +59,11 @@ class TheoreticalTray
 public:
     /**
      * @brief Main Constructor
+     * @param UfFunc UnderflowFunction to eval
      * @param Feed First input (with solid to extract)
      * @param SolventFeed (Solvent)
      */
-    TheoreticalTray(const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& SolventFeed);
+    TheoreticalTray(const std::shared_ptr<UnderFlowFunctionParser>& UfFunc, const std::shared_ptr<Current>& Feed, const std::shared_ptr<Current>& SolventFeed);
 
     /**
      * @brief Main method
@@ -69,16 +72,24 @@ public:
      */
     TrayOutput Compute();
 
-    /**
-     * @brief static method
-     * Represent Underflow limit's (polymonial regression)
-     * @param x represent first current component (Xa)
-     * @return double that represent Xb (solid)
-     */
-    static inline double UnderFlowFunction(double x){
-        return 2.9767*std::pow(x,3)-2.0481*std::pow(x,2)+0.2202*x+0.1711;
-    }
+//    /**
+//     * @brief static method
+//     * Represent Underflow limit's (polymonial regression)
+//     * @param x represent first current component (Xa)
+//     * @return double that represent Xb (solid)
+//     */
+//    inline double UnderFlowFunction(double x){
+//        const QJSValueList args(x);
+//        return js_to_double( val.call(args));
+//        //return 2.9767*std::pow(x,3)-2.0481*std::pow(x,2)+0.2202*x+0.1711;
+//    }
 
+//    static double js_to_double(const QJSValue& js_value)
+//    {
+//        if (js_value.isError()) throw std::invalid_argument("Error");
+//        else
+//            return js_value.toString().toDouble();
+//    }
 
 private:
     const std::shared_ptr<Current> WithSolidFeed;
@@ -92,6 +103,8 @@ private:
      * @brief Compute Overflow composition
      */
     void ComputeOverFlowRatios();
+
+    std::shared_ptr<UnderFlowFunctionParser> UnderFlowFunction;
 
 
 
