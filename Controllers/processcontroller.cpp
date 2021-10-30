@@ -133,6 +133,7 @@ void ProcessController::GetParamFromDialog()
         //basic verification
         if(steps<=0) throw std::invalid_argument("Iterations number must be strictly positive");
         if(ntray<=0) throw std::invalid_argument("Number of therocial tray must be strictly positive");
+        if(ntray==1)ntray++;
 
         //If everyting ok, param are correctly loaded
         LoadedParam = true;
